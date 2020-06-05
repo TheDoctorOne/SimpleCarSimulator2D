@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import Main.Configuration;
 import Main.GamePanel;
 import Main.Main;
 
@@ -25,7 +26,7 @@ public class TextHandler extends Component implements InputHandler{
 	private TextHandler(String fileName) {
 		inputFile = new File(fileName);
 		
-		if(!fileName.trim().equals(""))
+		if(!fileName.trim().equals("") && Configuration.getBooleanProperty("TEXT_INPUT_ACTIVE"))
 			new Thread(this).start();
 	}
 	

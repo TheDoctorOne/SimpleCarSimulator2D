@@ -5,12 +5,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import Main.Configuration;
 import Main.Main;
 
 public class PlayerCar extends GameObject{
 	
-	private final static double MAX_SPEED = 3;
-	private final static double VELOCITY = 0.4;
+	private final static double MAX_SPEED = Configuration.getDoubleProperty("MAX_SPEED");
+	private final static double VELOCITY = Configuration.getDoubleProperty("VELOCITY");
 	
 	private double turnValue = 0.0d;
 	private double tireTurnValue = 0.0d;
@@ -18,7 +19,7 @@ public class PlayerCar extends GameObject{
 	private boolean isMovingBack = false;
 	private Tire tire1, tire2, tire3, tire4;
 	private double speed = 0.0f;
-	public static PlayerCar INSTANCE = null;
+	private static PlayerCar INSTANCE = null;
 	
 	private boolean resetTireTurn = false;
 	
@@ -28,10 +29,10 @@ public class PlayerCar extends GameObject{
 	
 	private PlayerCar() {
 		super();
-		this.width = 30;
-		this.height = 50;
-		this.x = 150;
-		this.y = 200;
+		this.width = Configuration.getDoubleProperty("CAR_WIDTH");
+		this.height = Configuration.getDoubleProperty("CAR_HEIGHT");
+		this.x = Configuration.getDoubleProperty("CAR_X");
+		this.y = Configuration.getDoubleProperty("CAR_Y");
 
 		tire1 = new Tire(this.x-width/9, this.y+height/8, width/6, height/5, true);
 		tire2 = new Tire(this.x-width/18+width, this.y+height/8, width/6, height/5, true);
@@ -92,17 +93,17 @@ public class PlayerCar extends GameObject{
 	public void turnLeft() {
 		if(canMove && speed != 0)
 			if(isMovingBack)
-				turnValue += 1.5;
+				turnValue += speed/2*2;
 			else
-				turnValue -= 1.5;
+				turnValue -= speed/2*2;
 		tireTurnValue -= 1;
 	}
 	public void turnRight() {
 		if(canMove && speed != 0)
 			if(!isMovingBack)
-				turnValue += 1.5;
+				turnValue += speed/2*2;
 			else
-				turnValue -= 1.5;
+				turnValue -= speed/2*2;
 		tireTurnValue += 1;
 	}
 	public void moveBack() { moveBack(false); }
