@@ -21,6 +21,7 @@ public class PlayerCar extends GameObject{
 	private double speed = 0.0f;
 	private static PlayerCar INSTANCE = null;
 	
+	
 	private boolean resetTireTurn = false;
 	
 	public static PlayerCar getInstance() {
@@ -74,6 +75,7 @@ public class PlayerCar extends GameObject{
 		g2d.draw(new Rectangle2D.Double(x+(width/2),y+(height/3), 2, 2));
 		
 		g2d.rotate(Math.toRadians(360-turnValue));
+		
 	}
 	
 	private void drawTires(Graphics g) {
@@ -84,7 +86,7 @@ public class PlayerCar extends GameObject{
 	}
 	
 	private void updateTires() {
-		tire1.update(this.x-width/9, this.y+height/8, true);
+		tire1.update(this.x-width/9, this.y+height/8, false);
 		tire2.update(this.x-width/18+width, this.y+height/8, false);
 		tire3.update(this.x-width/9, this.y+height/8+height/1.6, false);
 		tire4.update(this.x-width/18+width, this.y+height/8+height/1.6, false);
@@ -112,17 +114,24 @@ public class PlayerCar extends GameObject{
 			isMovingBack = true;
 			if(speed>-MAX_SPEED && canMove && !forceMove)
 				speed -= VELOCITY;
-			if(x<0)
+			/*if(x<0)
 				x=1;
 			if(x>Main.WIDTH-width*2)
 				x=Main.WIDTH-width*2-1;
 			if(y<0)
 				y=1;
 			if(y>Main.HEIGHT-height*2)
-				y=Main.HEIGHT-height*2-1;
+				y=Main.HEIGHT-height*2-1;*/
 			
+			double temp_x = x;
+			double temp_y = y;
 			y += Math.cos(-Math.toRadians(turnValue))/8 * 5 * speed * (speed < 0 ? -1 : 1);
 			x -= Math.sin(Math.toRadians(turnValue))/8 * 5 * speed * (speed < 0 ? -1 : 1);
+			if(doIcollide()) {
+				x = temp_x;
+				y = temp_y;
+				speed = 0;
+			}
 			updateTires();
 		}
 	}
@@ -132,16 +141,23 @@ public class PlayerCar extends GameObject{
 			isMovingBack = false;
 			if(speed<MAX_SPEED && canMove && !forceMove)
 				speed += VELOCITY;
-			if(x<0)
+			/*if(x<0)
 				x=1;
 			if(x>Main.WIDTH-width*2)
 				x=Main.WIDTH-width*2-1;
 			if(y<0)
 				y=1;
 			if(y>Main.HEIGHT-height*2)
-				y=Main.HEIGHT-height*2-1;
+				y=Main.HEIGHT-height*2-1;*/
+			double temp_x = x;
+			double temp_y = y;
 			y -= Math.cos(Math.toRadians(turnValue))/8 * 5 * speed;
 			x += Math.sin(Math.toRadians(turnValue))/8 * 5 * speed;
+			if(doIcollide()) {
+				x = temp_x;
+				y = temp_y;
+				speed = 0;
+			}
 			updateTires();
 		}
 	}
@@ -157,6 +173,29 @@ public class PlayerCar extends GameObject{
 	public void setCanMove(boolean canMove) {
 		this.canMove = canMove;
 	}
+	
+	public boolean doIcollide() {
+		for(GameObject gObject: getGameObjects()) {
+			if(gObject instanceof PlayerCar || gObject instanceof Tire)
+				continue;
+			if(this.isCollidingWith(gObject)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/*@Override
+	public boolean isCollidingWith(GameObject object) {
+		
+		double x2 = object.getX();
+		double y2 = object.getY();
+		double h2 = object.getHeight();
+		double w2 = object.getWidth();
+
+		
+			
+		return false;
+	}*/
 	
 	protected class Tire extends GameObject {
 		private boolean isFront;

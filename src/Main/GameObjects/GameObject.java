@@ -2,6 +2,7 @@ package Main.GameObjects;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 
 import Main.GameObjects.PlayerCar.Tire;
 
@@ -20,6 +21,7 @@ public abstract class GameObject {
 	protected GameObject() {
 		gameObjects.add(this);
 	}
+	
 	
 	public static void drawAll(Graphics g) {
 		for(GameObject obj: gameObjects) {
@@ -49,7 +51,6 @@ public abstract class GameObject {
 		double y2 = go2.getY();
 		double h2 = go2.getHeight();
 		double w2 = go2.getWidth();
-		
 		// Check if in between
 		boolean between_x = false;
 		boolean between_y = false;
@@ -64,11 +65,31 @@ public abstract class GameObject {
 			return true;
 		
 		if(between_x)
-			if(y2+h2 >= y1 && y2+h2 <= y1+h2)
+			if(y2+h2 >= y1 && y2+h2 <= y1+h1)
 				return true;
 		
 		if(between_y)
 			if(x2+w2 >= x1 && x2+w2 <= x1+w1)
+				return true;
+		
+		//******************************
+		between_x = false;
+		between_y = false;
+		if (x1 >= x2 && x1 <= x2+w2) // x in between
+			between_x = true;
+		
+		if(y1 >= y2 && y1 <= y2+h2)
+			between_y = true;
+		
+		if(between_x && between_y)
+			return true;
+		
+		if(between_x)
+			if(y1+h1 >= y2 && y1+h1 <= y2+h2)
+				return true;
+		
+		if(between_y)
+			if(x1+w1 >= x2 && x1+w1 <= x2+w2)
 				return true;
 			
 		return false;
@@ -78,7 +99,13 @@ public abstract class GameObject {
 		return collisionCheck(this, object);
 	}
 	
+	public void setX(double x) {
+		this.x = x;
+	}
 	
+	public void setY(double y) {
+		this.y = y;
+	}
 	
 	public double getX() {
 		return x;
@@ -100,7 +127,53 @@ public abstract class GameObject {
 		return isCollidable;
 	}
 	
+	public static ArrayList<GameObject> getGameObjects() {
+		return gameObjects;
+	}
+	
 	public void setCollidable(boolean isCollidable) {
 		this.isCollidable = isCollidable;
 	}
+	
+	/*public static void runCollider() { //Not Neccesseary, but here and works.
+		if(!isRunning)
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					//collideChecker();
+					
+				}
+			}).start();
+	}
+	
+	private static boolean isRunning= false;
+	private static void collideChecker() {
+		isRunning = true;
+		while(true) {
+			try {
+				for(GameObject obj1: gameObjects) {
+					for(GameObject obj2: gameObjects) {
+						if(obj1.equals(obj2))
+							continue;
+						if((obj1 instanceof PlayerCar && obj2 instanceof Tire) || (obj2 instanceof PlayerCar && obj1 instanceof Tire))
+							continue;
+						if(obj1.isCollidable && obj2.isCollidable) {
+							if(obj1.isCollidingWith(obj2)) {
+								System.out.println(obj1.getClass().getSimpleName() + " colliding with " + obj2.getClass().getSimpleName());
+							}
+						}
+					}
+				}
+			} catch (ConcurrentModificationException e) {
+				e.printStackTrace();
+			}
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				isRunning = false;
+				e.printStackTrace();
+			}
+		}
+	}*/
 }
