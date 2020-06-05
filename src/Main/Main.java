@@ -5,8 +5,9 @@ import javax.swing.JFrame;
 
 public class Main {
 
-	private static final int WIDTH = 600;
-	private static final int HEIGHT = 600;
+	public static final int WIDTH = 1000;
+	public static final int HEIGHT = 800;
+	public static final String INPUT_FILE_NAME_STRING = "";
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

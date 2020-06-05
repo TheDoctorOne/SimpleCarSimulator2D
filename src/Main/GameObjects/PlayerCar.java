@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import Main.Main;
+
 public class PlayerCar extends GameObject{
 	
 	private final static double MAX_SPEED = 3;
@@ -41,7 +43,7 @@ public class PlayerCar extends GameObject{
 	public void draw(Graphics g) {
 		if(turnValue > 360 || turnValue < -360)
 			turnValue = 0;
-		System.out.println(canMove + ":" + speed);
+		//System.out.println(canMove + ":" + speed);
 		if(!canMove) {
 			if(speed>=VELOCITY/3)
 				speed -= VELOCITY/6; 
@@ -81,7 +83,7 @@ public class PlayerCar extends GameObject{
 	}
 	
 	private void updateTires() {
-		tire1.update(this.x-width/9, this.y+height/8, false);
+		tire1.update(this.x-width/9, this.y+height/8, true);
 		tire2.update(this.x-width/18+width, this.y+height/8, false);
 		tire3.update(this.x-width/9, this.y+height/8+height/1.6, false);
 		tire4.update(this.x-width/18+width, this.y+height/8+height/1.6, false);
@@ -109,6 +111,15 @@ public class PlayerCar extends GameObject{
 			isMovingBack = true;
 			if(speed>-MAX_SPEED && canMove && !forceMove)
 				speed -= VELOCITY;
+			if(x<0)
+				x=1;
+			if(x>Main.WIDTH-width*2)
+				x=Main.WIDTH-width*2-1;
+			if(y<0)
+				y=1;
+			if(y>Main.HEIGHT-height*2)
+				y=Main.HEIGHT-height*2-1;
+			
 			y += Math.cos(-Math.toRadians(turnValue))/8 * 5 * speed * (speed < 0 ? -1 : 1);
 			x -= Math.sin(Math.toRadians(turnValue))/8 * 5 * speed * (speed < 0 ? -1 : 1);
 			updateTires();
@@ -120,6 +131,14 @@ public class PlayerCar extends GameObject{
 			isMovingBack = false;
 			if(speed<MAX_SPEED && canMove && !forceMove)
 				speed += VELOCITY;
+			if(x<0)
+				x=1;
+			if(x>Main.WIDTH-width*2)
+				x=Main.WIDTH-width*2-1;
+			if(y<0)
+				y=1;
+			if(y>Main.HEIGHT-height*2)
+				y=Main.HEIGHT-height*2-1;
 			y -= Math.cos(Math.toRadians(turnValue))/8 * 5 * speed;
 			x += Math.sin(Math.toRadians(turnValue))/8 * 5 * speed;
 			updateTires();

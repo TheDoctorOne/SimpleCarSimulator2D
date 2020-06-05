@@ -75,7 +75,7 @@ public class GamePanel extends JPanel implements KeyListener{
 				
 		}
 	}
-
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if(pressedList.contains(e.getKeyCode()))
