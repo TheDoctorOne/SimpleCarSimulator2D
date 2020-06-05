@@ -87,15 +87,15 @@ public class GamePanel extends JPanel implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(!(e.getSource() instanceof InputHandler) && !INPUT_OVERRIDE) {
+		if(!(e.getSource() instanceof InputHandler)) {
 			if(!INPUT_OVERRIDE) {
 				pressedList.clear();
+				TextHandler.getInstance().resetPreviousString();
 				CAR.setResetTireTurn(true);
+				CAR.setCanMove(false);
 			}
 			INPUT_OVERRIDE = true;
-		} else if(e.getSource() instanceof InputHandler && INPUT_OVERRIDE) {
-			INPUT_OVERRIDE = false;
-		}
+		} 
 		if(pressedList.contains(e.getKeyCode()))
 			return;
 		pressedList.add(e.getKeyCode());

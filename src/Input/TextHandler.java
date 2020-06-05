@@ -38,7 +38,7 @@ public class TextHandler extends Component implements InputHandler{
 			try {
 				if(inputFile.exists())
 					Thread.sleep(5);
-				else
+				if(!inputFile.exists() || GamePanel.GetInstance().getInputOverride())
 					Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -90,6 +90,10 @@ public class TextHandler extends Component implements InputHandler{
 	public void KeyPressed(int key) {
 		GamePanel.GetInstance().keyPressed(new KeyEvent(this, 0, 0, 0, key, (char) key));
 		
+	}
+	
+	public void resetPreviousString() {
+		previousString = "";
 	}
 
 }
