@@ -7,11 +7,15 @@ import java.awt.geom.Rectangle2D;
 
 public class PlayerCar extends GameObject{
 	
+	private final static double MAX_SPEED = 3;
+	private final static double VELOCITY = 0.4;
+	
 	private double turnValue = 0.0d;
 	private double tireTurnValue = 0.0d;
 	private boolean canMove = false;
+	private boolean isMovingBack = false;
 	private Tire tire1, tire2, tire3, tire4;
-	
+	private double speed = 0.0f;
 	public static PlayerCar INSTANCE = null;
 	
 	private boolean resetTireTurn = false;
@@ -37,11 +41,26 @@ public class PlayerCar extends GameObject{
 	public void draw(Graphics g) {
 		if(turnValue > 360 || turnValue < -360)
 			turnValue = 0;
-		
+		System.out.println(canMove + ":" + speed);
+		if(!canMove) {
+			if(speed>=VELOCITY/3)
+				speed -= VELOCITY/6; 
+			else if(speed<=-VELOCITY/3)
+				speed += VELOCITY/6;
+			if(speed<VELOCITY/3 && speed>-VELOCITY/3)
+				speed = 0; 
+		}
+		if(speed>0.5 || speed<-0.5) {
+			if (speed>0)
+				moveForward(true);
+			else if(speed<0)
+				moveBack(true);
+		}
+			
 		
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.rotate(Math.toRadians(turnValue), x+(width/2),y+(height/6));
-		drawTires(g.create());
+		g2d.rotate(Math.toRadians(turnValue), x+(width/2),y+(height/3));
+		 drawTires(g.create());
 		
 	    g2d.setColor(Color.BLACK);
 	    //System.out.println("Body X : " + x + " Y : " + y);
@@ -49,7 +68,7 @@ public class PlayerCar extends GameObject{
 	    g2d.draw(body);
 	    g2d.fill(body);
 	    g2d.setColor(Color.GRAY);
-		//g2d.draw(new Rectangle2D.Double(x+(width/2),y+height/6, 2, 2));
+		g2d.draw(new Rectangle2D.Double(x+(width/2),y+(height/3), 2, 2));
 		
 		g2d.rotate(Math.toRadians(360-turnValue));
 	}
@@ -63,32 +82,46 @@ public class PlayerCar extends GameObject{
 	
 	private void updateTires() {
 		tire1.update(this.x-width/9, this.y+height/8, false);
-		tire2.update(this.x-width/18+width, this.y+height/8, true);
+		tire2.update(this.x-width/18+width, this.y+height/8, false);
 		tire3.update(this.x-width/9, this.y+height/8+height/1.6, false);
 		tire4.update(this.x-width/18+width, this.y+height/8+height/1.6, false);
 	}
 	
 	public void turnLeft() {
-		if(canMove)
-			turnValue -= 1;
+		if(canMove && speed != 0)
+			if(isMovingBack)
+				turnValue += 1.5;
+			else
+				turnValue -= 1.5;
 		tireTurnValue -= 1;
 	}
 	public void turnRight() {
-		if(canMove)
-			turnValue += 1;
+		if(canMove && speed != 0)
+			if(!isMovingBack)
+				turnValue += 1.5;
+			else
+				turnValue -= 1.5;
 		tireTurnValue += 1;
 	}
-	public void moveBack() {
-		if(canMove) {
-			y += Math.cos(Math.toRadians(turnValue))/8 * 15;
-			x -= Math.sin(Math.toRadians(turnValue))/8 * 15;
+	public void moveBack() { moveBack(false); }
+	private void moveBack(boolean forceMove) {
+		if(canMove || forceMove) {
+			isMovingBack = true;
+			if(speed>-MAX_SPEED && canMove && !forceMove)
+				speed -= VELOCITY;
+			y += Math.cos(-Math.toRadians(turnValue))/8 * 5 * speed * (speed < 0 ? -1 : 1);
+			x -= Math.sin(Math.toRadians(turnValue))/8 * 5 * speed * (speed < 0 ? -1 : 1);
 			updateTires();
 		}
 	}
-	public void moveForward() {
-		if(canMove) {
-			y -= Math.cos(Math.toRadians(turnValue))/8 * 15;
-			x += Math.sin(Math.toRadians(turnValue))/8 * 15;
+	public void moveForward() { moveForward(false); }
+	private void moveForward(boolean forceMove) {
+		if(canMove || forceMove) {
+			isMovingBack = false;
+			if(speed<MAX_SPEED && canMove && !forceMove)
+				speed += VELOCITY;
+			y -= Math.cos(Math.toRadians(turnValue))/8 * 5 * speed;
+			x += Math.sin(Math.toRadians(turnValue))/8 * 5 * speed;
 			updateTires();
 		}
 	}

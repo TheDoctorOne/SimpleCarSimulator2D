@@ -17,13 +17,12 @@ public abstract class GameObject {
 	protected boolean isVisible = true;
 	
 	protected GameObject() {
-		if(!(this instanceof Tire))
-			gameObjects.add(this);
+		gameObjects.add(this);
 	}
 	
 	public static void drawAll(Graphics g) {
 		for(GameObject obj: gameObjects) {
-			if(obj.isVisible)
+			if(obj.isVisible && !(obj instanceof Tire))
 				obj.draw(g.create());
 		}
 	}
