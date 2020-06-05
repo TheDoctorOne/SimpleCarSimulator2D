@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
+import Input.TextHandler;
 import Main.GameObjects.PlayerCar;
 import Main.GameObjects.GameObject;
 
@@ -17,8 +18,10 @@ import Main.GameObjects.GameObject;
 public class GamePanel extends JPanel implements KeyListener{
 	
 	private static GamePanel INSTANCE = null;
+	private static boolean INPUT_OVERRIDE = false;
 	private final Set<Integer> pressedList = new HashSet<Integer>(); 
 	private PlayerCar CAR = null;
+	
 	private GamePanel() {
 		CAR = PlayerCar.getInstance();
 	}
@@ -70,6 +73,11 @@ public class GamePanel extends JPanel implements KeyListener{
 					CAR.setCanMove(true);
 					break;
 				default:
+					Set<Integer> r = new HashSet<>();
+					r.add(k);
+					pressedList.removeAll(r);
+					if(pressedList.size() < 1)
+						INPUT_OVERRIDE = false;
 					break;
 			}
 				
@@ -78,9 +86,19 @@ public class GamePanel extends JPanel implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if(!(e.getSource() instanceof TextHandler) && !INPUT_OVERRIDE) {
+			if(!INPUT_OVERRIDE) {
+				pressedList.clear();
+				CAR.setResetTireTurn(true);
+			}
+			INPUT_OVERRIDE = true;
+		} else if(e.getSource() instanceof TextHandler && INPUT_OVERRIDE) {
+			INPUT_OVERRIDE = false;
+		}
 		if(pressedList.contains(e.getKeyCode()))
 			return;
 		pressedList.add(e.getKeyCode());
+		
 	}
 
 	@Override
@@ -88,6 +106,8 @@ public class GamePanel extends JPanel implements KeyListener{
 		Set<Integer> r = new HashSet<>();
 		r.add(e.getKeyCode());
 		pressedList.removeAll(r);
+		if(pressedList.size() < 1)
+			INPUT_OVERRIDE = false;
 		if(e.getKeyCode() == 37 || e.getKeyCode() == 39)
 			CAR.setResetTireTurn(true);
 		if(e.getKeyCode() == 38 || e.getKeyCode() == 40)
@@ -97,4 +117,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent e) {}
 
+	public boolean getInputOverride() {
+		return INPUT_OVERRIDE;
+	}
 }

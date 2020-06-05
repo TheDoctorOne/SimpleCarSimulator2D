@@ -13,7 +13,7 @@ import Main.Main;
 @SuppressWarnings("serial")
 public class TextHandler extends Component implements InputHandler{
 	
-	public static TextHandler INSTANCE = null;
+	private static TextHandler INSTANCE = new TextHandler(Main.INPUT_FILE_NAME_STRING);
 	private final File inputFile;
 	private String previousString = "";
 	private String keySplit = " ";
@@ -31,8 +31,10 @@ public class TextHandler extends Component implements InputHandler{
 	
 	@Override
 	public void run() {
+		
 		while(true) {
-			Handler();
+			if(!GamePanel.GetInstance().getInputOverride())
+				Handler();
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
@@ -46,12 +48,14 @@ public class TextHandler extends Component implements InputHandler{
 		try {
 			BufferedReader bReader = new BufferedReader(new FileReader(inputFile));
 			String tmp = bReader.readLine();
-			if(!tmp.equals(previousString)) {
+			System.out.println(tmp + ":" + previousString);
+			if(tmp!=null && !tmp.equals(previousString)) {
 				for(String k : previousString.trim().split(keySplit)) {KeyRelease(handleString(k));}
 				previousString = tmp;
-				for(String k : previousString.trim().split(keySplit)) {KeyPressed(handleString(k));}
-				
 			}
+			for(String k : previousString.trim().split(keySplit)) {KeyPressed(handleString(k));}
+			
+			bReader.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,7 +63,7 @@ public class TextHandler extends Component implements InputHandler{
 	}
 
 	private int handleString(String k) {
-		switch (k) {
+		switch (k.toUpperCase()) {
 			case "LEFT":
 				return 37;
 			case "RIGHT":

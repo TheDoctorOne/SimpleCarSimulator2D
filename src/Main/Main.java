@@ -2,17 +2,21 @@ package Main;
 
 import javax.swing.JFrame;
 
+import Input.InputHandler;
+import Input.TextHandler;
+
 
 public class Main {
 
 	public static final int WIDTH = 1000;
 	public static final int HEIGHT = 800;
-	public static final String INPUT_FILE_NAME_STRING = "";
+	public static final String INPUT_FILE_NAME_STRING = "input.txt";
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		JFrame frame = new JFrame();
 		GamePanel gamePanel = GamePanel.GetInstance();
+		InputHandler inputHandler = TextHandler.getInstance();
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WIDTH, HEIGHT);
@@ -32,7 +36,7 @@ public class Main {
 					//gamePanel.i++;
 					gamePanel.repaint();
 					try {
-						Thread.sleep(7);
+						Thread.sleep(15);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
