@@ -15,6 +15,7 @@ public abstract class GameObject {
 	protected double visibleHeight = 0.0f;
 	protected double visibleWidth = 0.0f;
 	protected boolean isVisible = true;
+	protected boolean isCollidable = true;
 	
 	protected GameObject() {
 		gameObjects.add(this);
@@ -95,4 +96,11 @@ public abstract class GameObject {
 		return width;
 	}
 	
+	public boolean isCollidable() {
+		return isCollidable;
+	}
+	
+	public void setCollidable(boolean isCollidable) {
+		this.isCollidable = isCollidable;
+	}
 }

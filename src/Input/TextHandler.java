@@ -33,10 +33,13 @@ public class TextHandler extends Component implements InputHandler{
 	public void run() {
 		
 		while(true) {
-			if(!GamePanel.GetInstance().getInputOverride())
+			if(!GamePanel.GetInstance().getInputOverride() && inputFile.exists())
 				Handler();
 			try {
-				Thread.sleep(5);
+				if(inputFile.exists())
+					Thread.sleep(5);
+				else
+					Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -48,6 +51,8 @@ public class TextHandler extends Component implements InputHandler{
 		try {
 			BufferedReader bReader = new BufferedReader(new FileReader(inputFile));
 			String tmp = bReader.readLine();
+			if(tmp == null)
+				tmp = "";
 			System.out.println(tmp + ":" + previousString);
 			if(tmp!=null && !tmp.equals(previousString)) {
 				for(String k : previousString.trim().split(keySplit)) {KeyRelease(handleString(k));}
@@ -57,7 +62,6 @@ public class TextHandler extends Component implements InputHandler{
 			
 			bReader.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

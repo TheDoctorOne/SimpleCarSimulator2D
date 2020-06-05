@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.swing.JPanel;
 
+import Input.InputHandler;
 import Input.TextHandler;
 import Main.GameObjects.PlayerCar;
 import Main.GameObjects.GameObject;
@@ -86,13 +87,13 @@ public class GamePanel extends JPanel implements KeyListener{
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(!(e.getSource() instanceof TextHandler) && !INPUT_OVERRIDE) {
+		if(!(e.getSource() instanceof InputHandler) && !INPUT_OVERRIDE) {
 			if(!INPUT_OVERRIDE) {
 				pressedList.clear();
 				CAR.setResetTireTurn(true);
 			}
 			INPUT_OVERRIDE = true;
-		} else if(e.getSource() instanceof TextHandler && INPUT_OVERRIDE) {
+		} else if(e.getSource() instanceof InputHandler && INPUT_OVERRIDE) {
 			INPUT_OVERRIDE = false;
 		}
 		if(pressedList.contains(e.getKeyCode()))
