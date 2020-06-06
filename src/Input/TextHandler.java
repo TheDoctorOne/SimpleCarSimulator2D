@@ -10,6 +10,7 @@ import java.io.IOException;
 import Main.Configuration;
 import Main.GamePanel;
 import Main.Main;
+import Main.GameObjects.PlayerCar;
 
 @SuppressWarnings("serial")
 public class TextHandler extends Component implements InputHandler{
@@ -84,14 +85,38 @@ public class TextHandler extends Component implements InputHandler{
 
 	@Override
 	public void KeyRelease(int key) {
-		GamePanel.GetInstance().keyReleased(new KeyEvent(this, 0, 0, 0, key, (char) key));
+		//GamePanel.GetInstance().keyReleased(new KeyEvent(this, 0, 0, 0, key, (char) key));
 		
 	}
 
 	@Override
 	public void KeyPressed(int key) {
-		GamePanel.GetInstance().keyPressed(new KeyEvent(this, 0, 0, 0, key, (char) key));
-		
+		try {
+		switch(key) {
+			case 37: // Left
+				PlayerCar.getInstance().setResetTireTurn(false);
+				PlayerCar.getInstance().turnLeft();
+				Thread.sleep(6);
+				break;
+			case 38: // Up - Forward
+				PlayerCar.getInstance().moveForward();
+				PlayerCar.getInstance().setCanMove(true);
+				Thread.sleep(6);
+				break;
+			case 39: // Right
+				PlayerCar.getInstance().setResetTireTurn(false);
+				PlayerCar.getInstance().turnRight();
+				Thread.sleep(6);
+				break;
+			case 40: // Down - Back
+				PlayerCar.getInstance().moveBack();
+				PlayerCar.getInstance().setCanMove(true);
+				Thread.sleep(6);
+				break;
+		}
+		} catch (InterruptedException e) {
+			
+		}
 	}
 	
 	public void resetPreviousString() {

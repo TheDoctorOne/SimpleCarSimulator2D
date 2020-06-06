@@ -17,13 +17,13 @@ public class Main {
 	public static final int HEIGHT = Integer.parseInt(Configuration.getProperty("WINDOW_HEIGHT"));
 	
 	static {
-		
+		Configuration.readConfig();
 		
 	}
 
 	public static void main(String[] args) {
-		Configuration.readConfig();
-		TextHandler.getInstance();
+		
+		
 		new Border(0, 0, 10, Main.HEIGHT, Color.BLACK);
 		new Border(Main.WIDTH-PlayerCar.getInstance().getWidth()/4-5, 0,10 , Main.HEIGHT, Color.BLACK);
 		new Border(0, 0,WIDTH , 10, Color.BLACK);
@@ -32,7 +32,7 @@ public class Main {
 		JFrame frame = new JFrame();
 		GamePanel gamePanel = GamePanel.GetInstance();
 
-		
+		TextHandler.getInstance();
 		
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

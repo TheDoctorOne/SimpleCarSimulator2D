@@ -72,7 +72,8 @@ public class GamePanel extends JPanel implements KeyListener{
 	private void KeyHandler() {
 		if (pressedList.size() < 1)
 			return;
-		for(int k : pressedList) {
+		Set<Integer> holderSet = new HashSet<Integer>(pressedList);
+		for(int k : holderSet) {
 			switch(k){
 				case 37: // Left
 					CAR.setResetTireTurn(false);
@@ -115,7 +116,9 @@ public class GamePanel extends JPanel implements KeyListener{
 		} 
 		if(pressedList.contains(e.getKeyCode()))
 			return;
-		pressedList.add(e.getKeyCode());
+		Set<Integer> tempList = new HashSet<Integer>();
+		tempList.add(e.getKeyCode());
+		pressedList.addAll(tempList);
 		
 	}
 
