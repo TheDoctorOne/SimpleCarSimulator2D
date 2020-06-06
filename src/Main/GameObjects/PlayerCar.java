@@ -86,10 +86,10 @@ public class PlayerCar extends GameObject{
 	}
 	
 	private void updateTires() {
-		tire1.update(this.x-width/9, this.y+height/8, false);
-		tire2.update(this.x-width/18+width, this.y+height/8, false);
-		tire3.update(this.x-width/9, this.y+height/8+height/1.6, false);
-		tire4.update(this.x-width/18+width, this.y+height/8+height/1.6, false);
+		tire1.update(this.x-width/9, this.y+height/8, width/6, height/5, false);
+		tire2.update(this.x-width/18+width, this.y+height/8, width/6, height/5, false);
+		tire3.update(this.x-width/9, this.y+height/8+height/1.6, width/6, height/5, false);
+		tire4.update(this.x-width/18+width, this.y+height/8+height/1.6, width/6, height/5, false);
 	}
 	
 	public void turnLeft() {
@@ -174,14 +174,37 @@ public class PlayerCar extends GameObject{
 		this.canMove = canMove;
 	}
 	
+	private boolean isAlreadyBelow = false;
 	public boolean doIcollide() {
+		double temp_width = width;
+		double temp_heigth = height;
+		double temp_x = x;
+		double temp_y = y;
+		if(isAlreadyBelow || (y > Main.HEIGHT/2 && !isMovingBack)) {
+			y = y-height/2.3;
+			isAlreadyBelow = true;
+		}
+		if(isAlreadyBelow && y < Main.HEIGHT-height*2)
+			isAlreadyBelow = false;
+		/*if((turnValue > 70 && turnValue < 100) || (turnValue < -170 && turnValue > -190)) {
+			width = temp_heigth;
+			height = temp_width;
+		}*/
 		for(GameObject gObject: getGameObjects()) {
 			if(gObject instanceof PlayerCar || gObject instanceof Tire)
 				continue;
 			if(this.isCollidingWith(gObject)) {
+				x = temp_x;
+				y = temp_y;
+				width = temp_width;
+				height = temp_heigth;
 				return true;
 			}
 		}
+		x = temp_x;
+		y = temp_y;
+		width = temp_width;
+		height = temp_heigth;
 		return false;
 	}
 	/*@Override
@@ -207,12 +230,14 @@ public class PlayerCar extends GameObject{
 			this.isFront = isFront;
 		}
 		
-		protected void update(double nx,double ny, boolean debug) {
+		protected void update(double nx,double ny, double width, double heigth, boolean debug) {
 			if(debug)
 				System.out.println("Player : " + PlayerCar.INSTANCE.getX() + " : " + PlayerCar.INSTANCE.getY());
 			
 			this.x = nx;
 			this.y = ny;
+			this.width = width;
+			this.height = heigth;
 			
 			if(debug)
 				System.out.println("UPDATE : " + this.x + " : " + this.y);
