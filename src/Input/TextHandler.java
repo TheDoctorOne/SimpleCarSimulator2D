@@ -14,16 +14,17 @@ import Main.Main;
 @SuppressWarnings("serial")
 public class TextHandler extends Component implements InputHandler{
 	
-	private static TextHandler INSTANCE = new TextHandler(Main.INPUT_FILE_NAME_STRING);
+	private static TextHandler INSTANCE = null;
 	private final File inputFile;
 	private String previousString = "";
 	private String keySplit = " ";
 		
 	public static TextHandler getInstance() {
-		return INSTANCE!=null ? INSTANCE : (INSTANCE = new TextHandler(Main.INPUT_FILE_NAME_STRING));
+		return INSTANCE!=null ? INSTANCE : (INSTANCE = new TextHandler());
 	}
 	
-	private TextHandler(String fileName) {
+	private TextHandler() {
+		String fileName = Configuration.getProperty("TEXT_INPUT_PATH");
 		inputFile = new File(fileName);
 		
 		if(!fileName.trim().equals("") && Configuration.getBooleanProperty("TEXT_INPUT_ACTIVE"))

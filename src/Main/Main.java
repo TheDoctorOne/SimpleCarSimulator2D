@@ -15,15 +15,15 @@ public class Main {
 
 	public static final int WIDTH = Integer.parseInt(Configuration.getProperty("WINDOW_WIDTH"));
 	public static final int HEIGHT = Integer.parseInt(Configuration.getProperty("WINDOW_HEIGHT"));
-	public static final String INPUT_FILE_NAME_STRING = "input.txt";
 	
 	static {
-		Configuration.readConfig();
-		TextHandler.getInstance();
+		
 		
 	}
 
 	public static void main(String[] args) {
+		Configuration.readConfig();
+		TextHandler.getInstance();
 		new Border(0, 0, 10, Main.HEIGHT, Color.BLACK);
 		new Border(Main.WIDTH-PlayerCar.getInstance().getWidth()/4-5, 0,10 , Main.HEIGHT, Color.BLACK);
 		new Border(0, 0,WIDTH , 10, Color.BLACK);

@@ -19,7 +19,7 @@ public class Configuration {
 			{"MAX_SPEED","3.0"},
 			{"VELOCITY","0.4"},
 			{"TEXT_INPUT_ACTIVE","true"},
-			//{"",""}
+			{"TEXT_INPUT_PATH","input.txt"}
 	};
 	private static String configFileName = "config.ini"; 
 	private static File configFile = null;
