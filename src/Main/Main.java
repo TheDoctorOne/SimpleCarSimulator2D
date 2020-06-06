@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JFrame;
 
 import Input.TextHandler;
+import Main.GameObjects.Border;
 import Main.GameObjects.GameObject;
 import Main.GameObjects.Obsticle;
 import Main.GameObjects.PlayerCar;
@@ -23,10 +24,10 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		new Obsticle(0, 0, 10, Main.HEIGHT, Color.BLACK);
-		new Obsticle(Main.WIDTH-PlayerCar.getInstance().getWidth()/4-5, 0,10 , Main.HEIGHT, Color.BLACK);
-		new Obsticle(0, 0,WIDTH , 10, Color.BLACK);
-		new Obsticle(0, HEIGHT-PlayerCar.getInstance().getHeight()/2-5, WIDTH , PlayerCar.getInstance().getWidth()/4, Color.BLACK);
+		new Border(0, 0, 10, Main.HEIGHT, Color.BLACK);
+		new Border(Main.WIDTH-PlayerCar.getInstance().getWidth()/4-5, 0,10 , Main.HEIGHT, Color.BLACK);
+		new Border(0, 0,WIDTH , 10, Color.BLACK);
+		new Border(0, HEIGHT-PlayerCar.getInstance().getHeight()/2-5, WIDTH , PlayerCar.getInstance().getWidth()/4, Color.BLACK);
 		// TODO Auto-generated method stub
 		JFrame frame = new JFrame();
 		GamePanel gamePanel = GamePanel.GetInstance();

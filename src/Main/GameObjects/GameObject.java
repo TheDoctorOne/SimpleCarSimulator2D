@@ -1,6 +1,8 @@
 package Main.GameObjects;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 
@@ -93,6 +95,10 @@ public abstract class GameObject {
 				return true;
 			
 		return false;
+	}
+	
+	public Rectangle2D getBounds() {
+		return new Rectangle2D.Double(x,y,width,height);
 	}
 	
 	public boolean isCollidingWith(GameObject object) {

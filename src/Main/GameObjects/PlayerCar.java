@@ -93,25 +93,29 @@ public class PlayerCar extends GameObject{
 	}
 	
 	public void turnLeft() {
+		System.out.println(isMovingBack);
 		if(canMove && speed != 0)
-			if(isMovingBack)
-				turnValue += speed/2*2;
-			else
+			if(isMovingBack) {
 				turnValue -= speed/2*2;
+			}
+			else {
+				turnValue -= speed/2*2;
+			}
 		tireTurnValue -= 1;
 	}
 	public void turnRight() {
 		if(canMove && speed != 0)
-			if(!isMovingBack)
+			if(isMovingBack)
 				turnValue += speed/2*2;
 			else
-				turnValue -= speed/2*2;
+				turnValue += speed/2*2;
 		tireTurnValue += 1;
 	}
 	public void moveBack() { moveBack(false); }
 	private void moveBack(boolean forceMove) {
-		if(canMove || forceMove) {
-			isMovingBack = true;
+		
+		if(canMove || forceMove) {isMovingBack = true;
+			
 			if(speed>-MAX_SPEED && canMove && !forceMove)
 				speed -= VELOCITY;
 			/*if(x<0)
@@ -137,8 +141,11 @@ public class PlayerCar extends GameObject{
 	}
 	public void moveForward() { moveForward(false); }
 	private void moveForward(boolean forceMove) {
+		if(speed < 0)
+			speed *= -1;
 		if(canMove || forceMove) {
 			isMovingBack = false;
+			
 			if(speed<MAX_SPEED && canMove && !forceMove)
 				speed += VELOCITY;
 			/*if(x<0)
