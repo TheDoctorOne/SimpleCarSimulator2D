@@ -1,8 +1,6 @@
 package Main;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -12,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Input.InputHandler;
@@ -32,7 +31,9 @@ public class GamePanel extends JPanel implements KeyListener{
 	    try {
 			bgImage = ImageIO.read(new File("bg.png"));
 		} catch (IOException e) {
+			bgImage = null;
 			System.out.println("Bg Image Read Fail");
+			JOptionPane.showMessageDialog(null, "Background Image not found.");
 		}
 	}
 	
@@ -49,24 +50,14 @@ public class GamePanel extends JPanel implements KeyListener{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		for(int i=0;i<Main.WIDTH;i+=bgImage.getWidth(null)) {
-			for(int k=0;k<Main.HEIGHT;k+=bgImage.getHeight(null)) {
-				g.drawImage(bgImage, i, k, null);
+		if(bgImage != null)
+			for(int i=0;i<Main.WIDTH;i+=bgImage.getWidth(null)) {
+				for(int k=0;k<Main.HEIGHT;k+=bgImage.getHeight(null)) {
+					g.drawImage(bgImage, i, k, null);
+				}
 			}
-		}
-		Graphics2D g2d = (Graphics2D) g;
 		KeyHandler();
 		GameObject.drawAll(g);
-
-	    g2d.setColor(Color.GRAY);
-	    //int cur_x = (int)(k*Math.cos(-90)-k*Math.sin(-90));
-	    //int cur_y = (int)(k*Math.sin(-90)+k*Math.cos(-90));
-	    //Rectangle rect3 = new Rectangle(k, k, 25, 25);
-	    //g2d.rotate(Math.toRadians(i), k+12,k);
-	    
-	    
-	    
-	    g2d.setColor(Color.BLACK);
 	}
 	
 	private void KeyHandler() {

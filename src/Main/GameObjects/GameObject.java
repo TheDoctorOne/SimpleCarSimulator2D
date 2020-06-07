@@ -2,9 +2,7 @@ package Main.GameObjects;
 
 import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 
 import Main.GameObjects.PlayerCar.Tire;
 

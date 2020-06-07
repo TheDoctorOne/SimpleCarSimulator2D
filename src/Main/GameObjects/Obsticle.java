@@ -5,19 +5,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import Main.Main;
-
 public class Obsticle extends GameObject {
 	
 	private final Color color;
 	private final Rectangle2D rectangle;
-
-	static {
-			
-			
-			/*y=1;
-			y=Main.HEIGHT-height*2-1;*/
-	}
 	
 	public Obsticle(double x,double y,double w,double h, Color c) {
 		super();

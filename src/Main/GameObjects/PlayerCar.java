@@ -114,18 +114,10 @@ public class PlayerCar extends GameObject{
 	public void moveBack() { moveBack(false); }
 	private void moveBack(boolean forceMove) {
 		
-		if(canMove || forceMove) {isMovingBack = true;
-			
+		if(canMove || forceMove) {
+			isMovingBack = true;
 			if(speed>-MAX_SPEED && canMove && !forceMove)
 				speed -= VELOCITY;
-			/*if(x<0)
-				x=1;
-			if(x>Main.WIDTH-width*2)
-				x=Main.WIDTH-width*2-1;
-			if(y<0)
-				y=1;
-			if(y>Main.HEIGHT-height*2)
-				y=Main.HEIGHT-height*2-1;*/
 			
 			double temp_x = x;
 			double temp_y = y;
@@ -148,14 +140,6 @@ public class PlayerCar extends GameObject{
 			
 			if(speed<MAX_SPEED && canMove && !forceMove)
 				speed += VELOCITY;
-			/*if(x<0)
-				x=1;
-			if(x>Main.WIDTH-width*2)
-				x=Main.WIDTH-width*2-1;
-			if(y<0)
-				y=1;
-			if(y>Main.HEIGHT-height*2)
-				y=Main.HEIGHT-height*2-1;*/
 			double temp_x = x;
 			double temp_y = y;
 			y -= Math.cos(Math.toRadians(turnValue))/8 * 5 * speed;
@@ -191,18 +175,14 @@ public class PlayerCar extends GameObject{
 			y = y-height/2.3;
 			isAlreadyBelow = true;
 		}
-		if(isAlreadyBelow && y < Main.HEIGHT-height*2)
+		if(isAlreadyBelow && y < Main.HEIGHT-height*3)
 			isAlreadyBelow = false;
-		/*if((turnValue > 70 && turnValue < 100) || (turnValue < -170 && turnValue > -190)) {
-			width = temp_heigth;
-			height = temp_width;
-		}*/
 		for(GameObject gObject: getGameObjects()) {
 			if(gObject instanceof PlayerCar || gObject instanceof Tire)
 				continue;
 			if(this.isCollidingWith(gObject)) {
-				x = temp_x;
-				y = temp_y;
+				x = temp_x + (gObject.getX()-x);
+				y = temp_y + (gObject.getY()-y);
 				width = temp_width;
 				height = temp_heigth;
 				return true;
@@ -214,18 +194,6 @@ public class PlayerCar extends GameObject{
 		height = temp_heigth;
 		return false;
 	}
-	/*@Override
-	public boolean isCollidingWith(GameObject object) {
-		
-		double x2 = object.getX();
-		double y2 = object.getY();
-		double h2 = object.getHeight();
-		double w2 = object.getWidth();
-
-		
-			
-		return false;
-	}*/
 	
 	protected class Tire extends GameObject {
 		private boolean isFront;
@@ -253,7 +221,6 @@ public class PlayerCar extends GameObject{
 		@Override
 		public void draw(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g.create();
-			//System.out.println(tireTurnValue);
 			if(tireTurnValue > 30)
 				tireTurnValue = 30;
 			else if(tireTurnValue < -30)
@@ -270,7 +237,6 @@ public class PlayerCar extends GameObject{
 				g2d.rotate(Math.toRadians(tireTurnValue), this.x+width/2, this.y+height/2);
 			
 			g2d.setColor(Color.GRAY);
-		    //System.out.println("Tire X : " + x + " Y : " + y);
 			Rectangle2D tire = new Rectangle2D.Double(this.x, this.y, width, height);
 			
 			g2d.draw(tire);
