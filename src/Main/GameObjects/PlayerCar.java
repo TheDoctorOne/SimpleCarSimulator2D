@@ -196,7 +196,7 @@ public class PlayerCar extends GameObject{
 	}
 	
 	protected class Tire extends GameObject {
-		private boolean isFront;
+		private final boolean isFront;
 		public Tire(double nx,double ny,double w,double h, boolean isFront) {
 			this.x = nx;
 			this.y = ny;

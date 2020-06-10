@@ -26,7 +26,7 @@ public class Main {
 		new Border(0, HEIGHT-40, WIDTH , 10, Color.BLACK);
 		JFrame frame = new JFrame();
 		GamePanel gamePanel = GamePanel.GetInstance();
-		
+		frame.setTitle("HANDICAR");
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(WIDTH, HEIGHT);
